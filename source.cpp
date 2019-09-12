@@ -53,19 +53,77 @@ std::tuple<int, int, std::vector<int>> readData(std::string filePath)
 
 /*
 writeData function
-Takes in an int for the size of the row and an int for the size of the columns, an integer vector as the matrix, and a string for the name of the output file
+Takes in an int for the size of the row, an integer vector as the matrix, and a string for the name of the output file
 Prints the contents of the vector to the screen and to a file
 */
-void writeData(int rows, int columns, std::vector<int> matrix, std::string fileName)
+void writeData(int rows, std::vector<int> matrix, std::string fileName)
 {
-    for(int i = 0; i < columns; i++)
+    std::ofstream file;
+    int count = 0;
+    file.open(fileName);
+
+    if(file.is_open())
     {
-        for(int j = 0; j < rows; j++)
+        for(std::vector<int>::iterator it = matrix.begin(); it != matrix.end(); it++)
         {
-            std::cout << matrix[i+j] << ", ";
+            if(count == rows-1)
+            {
+                std::cout << *it << '\n';
+                file << *it << '\n';
+                count = 0;
+            }
+            else
+            {
+                std::cout << *it << ", ";
+                file << *it << ", ";
+                count++;
+            }
         }
-        std::cout << std::endl;
     }
+
+    file.close();
+}
+
+/*
+multiplyByConstant function
+Takes in an integer for rows, an integer matrix, and a constant integer
+The function then multiplies each element of the matrix by the constant and returns a vector with said multiplied values
+*/
+std::vector<int> multiplyByConstant(int rows, std::vector<int> matrix, int constant)
+{
+    for(std::vector<int>::iterator it = matrix.begin(); it != matrix.end(); it++)
+    {
+        *it = *it * constant;
+    }
+    return matrix;
+}
+
+/*
+subtractMatrixes function
+Takes in two integer values for the rows and columns and two matrixes
+The function then subtracts the matrixes from each other and returns the resulting matrix
+*/
+std::vector<int> subtractMatrixes(int rows, int columns, std::vector<int> matrix1, std::vector<int> matrix2)
+{
+    for(int i = 0; i < rows*columns; i++)
+    {
+        matrix1[i] = matrix1[i] - matrix2[i];
+    }
+    return matrix1;
+}
+
+/*
+transpaseMatrix function
+TBD
+*/
+std::vector<int> transposeMatrix(int row, int column, std::vector<int> matrix)
+{
+    std::vector<int> matrix;
+    for(int i = 0; i < column; i++)
+    {
+        
+    }
+    return matrix;
 }
 
 //Main
@@ -78,7 +136,16 @@ int main()
     std::tie(row1, column1, matrix1) = readData("Amatrix");
     std::tie(row2, column2, matrix2) = readData("Bmatrix");
 
-    writeData(row1, column1, matrix1, "CS2300P1aChen.outA");
-    writeData(row2, column2, matrix2, "CS2300P1aChen.outB");
+    std::cout << "MatrixA" << std::endl;
+    writeData(row1, matrix1, "CS2300P1aChen.outA");
+    std::cout << "\nMatrixB" << std::endl;
+    writeData(row2, matrix2, "CS2300P1aChen.outB");
+    std::cout << '\n';
+
+    std::cout << "5A - B Calculation" << std::endl;
+    matrix1 = multiplyByConstant(row1, matrix1, 5);
+    matrix1 = subtractMatrixes(row1, column1, matrix1, matrix2);
+    writeData(row1, matrix1, "CS2300P1aChen.calc");
+
     return 0;
 }
