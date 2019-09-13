@@ -1,6 +1,7 @@
 /*
 Sean Chen
-Last modified: Sept. 12, 2019
+Last modified: Sept. 13, 2019
+Written for CS 2300 Sec. 002
 source.cpp
 
 This program reads in from a file and builds a vector of the correct size based on the given files. Then the program writes these matrixes to files and to the screen
@@ -56,7 +57,9 @@ writeData function
 Takes in an int for the size of the row, an integer vector as the matrix, and a string for the name of the output file
 Prints the contents of the vector to the screen and to a file
 */
-void writeData(int rows, std::vector<int> matrix, std::string fileName)
+void writeData(int rows,
+                std::vector<int> matrix,
+                std::string fileName)
 {
     std::ofstream file;
     int count = 0;
@@ -89,9 +92,13 @@ multiplyByConstant function
 Takes in an integer for rows, an integer matrix, and a constant integer
 The function then multiplies each element of the matrix by the constant and returns a vector with said multiplied values
 */
-std::vector<int> multiplyByConstant(int rows, std::vector<int> matrix, int constant)
+std::vector<int> multiplyByConstant(int rows,
+                                    std::vector<int> matrix,
+                                    int constant)
 {
-    for(std::vector<int>::iterator it = matrix.begin(); it != matrix.end(); it++)
+    for(std::vector<int>::iterator it = matrix.begin();
+                                    it != matrix.end(); 
+                                    it++)
     {
         *it = *it * constant;
     }
@@ -100,15 +107,30 @@ std::vector<int> multiplyByConstant(int rows, std::vector<int> matrix, int const
 
 /*
 subtractMatrixes function
-Takes in two integer values for the rows and columns and two matrixes
+Takes in two integer values for the rows and columns for both matrixes. 
+Throws invalid_argument exception if the matrixes are not able to be subtracted from each other
 The function then subtracts the matrixes from each other and returns the resulting matrix
 */
-std::vector<int> subtractMatrixes(int rows, int columns, std::vector<int> matrix1, std::vector<int> matrix2)
+std::vector<int> subtractMatrixes(int rows,
+                                  int columns,
+                                  std::vector<int> matrix1,
+                                  int row2,
+                                  int column2,
+                                  std::vector<int> matrix2)
 {
-    for(int i = 0; i < rows*columns; i++)
+    if(rows != row2 || columns != column2)
     {
-        matrix1[i] = matrix1[i] - matrix2[i];
+        throw std::invalid_argument("Non-Matching Matricies");
     }
+    else
+    {
+        for(int i = 0; i < rows*columns; i++)
+        {
+            matrix1[i] = matrix1[i] - matrix2[i];
+        }        
+    }
+    
+
     return matrix1;
 }
 
@@ -118,7 +140,9 @@ Takes in an integer row and column, and an integer vector
 The function then turns each rox of the matrix into a column, based on the row and column values passed to it
 Then then function returns an integer vector
 */
-std::vector<int> transposeMatrix(int row, int column, std::vector<int> matrix)
+std::vector<int> transposeMatrix(int row,
+                                 int column,
+                                 std::vector<int> matrix)
 {
     std::vector<int> returnMatrix;
     for(int i = 0; i < row; i++)
@@ -147,14 +171,15 @@ int main()
     writeData(row2, matrix2, "CS2300P1aChen.outB");
     std::cout << '\n';
 
-    std::cout << "5A - B Calculation" << std::endl;
+    std::cout << "5A - B Matrix" << std::endl;
     matrix1 = multiplyByConstant(row1, matrix1, 5);
-    matrix1 = subtractMatrixes(row1, column1, matrix1, matrix2);
+    matrix1 = subtractMatrixes(row1, column1, matrix1, row2, column2, matrix2);
     writeData(row1, matrix1, "CS2300P1aChen.calc");
     std::cout << '\n';
-    std::cout << "Transpose" << std::endl;
+
+    std::cout << "Transpose Matrix" << std::endl;
     matrix1 = transposeMatrix(row1, column1, matrix1);
-    writeData(row1, matrix1, "transpose");
+    writeData(row1, matrix1, "CS2300P1aChen.trans");
 
     return 0;
 }
