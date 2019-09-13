@@ -113,17 +113,22 @@ std::vector<int> subtractMatrixes(int rows, int columns, std::vector<int> matrix
 }
 
 /*
-transpaseMatrix function
-TBD
+transposeMatrix function
+Takes in an integer row and column, and an integer vector
+The function then turns each rox of the matrix into a column, based on the row and column values passed to it
+Then then function returns an integer vector
 */
 std::vector<int> transposeMatrix(int row, int column, std::vector<int> matrix)
 {
-    std::vector<int> matrix;
-    for(int i = 0; i < column; i++)
+    std::vector<int> returnMatrix;
+    for(int i = 0; i < row; i++)
     {
-        
+        for(int j = 0; j < column; j++)
+        {
+            returnMatrix.push_back(matrix[(j*column)+i]);
+        }
     }
-    return matrix;
+    return returnMatrix;
 }
 
 //Main
@@ -146,6 +151,10 @@ int main()
     matrix1 = multiplyByConstant(row1, matrix1, 5);
     matrix1 = subtractMatrixes(row1, column1, matrix1, matrix2);
     writeData(row1, matrix1, "CS2300P1aChen.calc");
+    std::cout << '\n';
+    std::cout << "Transpose" << std::endl;
+    matrix1 = transposeMatrix(row1, column1, matrix1);
+    writeData(row1, matrix1, "transpose");
 
     return 0;
 }
