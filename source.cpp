@@ -46,7 +46,8 @@ std::tuple<int, int, std::vector<int>> readData(std::string filePath)
     }
     else
     {
-        std::cout << "Failed to open file!\nQuitting!" << std::endl; 
+        std::cout << "Failed to open file!\nQuitting!" << std::endl;
+        throw std::invalid_argument("Missing or Invalid file");
     }
     file.close();
     return std::make_tuple(rows, columns, matrix);
