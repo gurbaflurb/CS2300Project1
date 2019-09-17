@@ -97,13 +97,14 @@ std::vector<int> multiplyByConstant(int rows,
                                     std::vector<int> matrix,
                                     int constant)
 {
+    std::vector<int> returnMatrix;
     for(std::vector<int>::iterator it = matrix.begin();
                                     it != matrix.end(); 
                                     it++)
     {
-        *it = *it * constant;
+        returnMatrix.push_back(*it*constant);
     }
-    return matrix;
+    return returnMatrix;
 }
 
 /*
@@ -119,20 +120,22 @@ std::vector<int> subtractMatrixes(int rows,
                                   int column2,
                                   std::vector<int> matrix2)
 {
+    std::vector<int> returnMatrix;
+
     if(rows != row2 || columns != column2)
     {
         throw std::invalid_argument("Non-Matching Matricies");
     }
     else
     {
+        
         for(int i = 0; i < rows*columns; i++)
         {
-            matrix1[i] = matrix1[i] - matrix2[i];
+            returnMatrix.push_back(matrix1[i]-matrix2[i]);
         }        
     }
-    
 
-    return matrix1;
+    return returnMatrix;
 }
 
 /*
